@@ -35,7 +35,14 @@ async function listUnusedFields() {
         }
     }
     
-    const badFields = Object.values(fieldOccurences).filter(occ => occ.occurences === 0).map(occ => occ.path);
+    const badFields = 
+        Object.values(fieldOccurences)
+        .filter(occ => 
+            occ.occurences === 0 
+            && !occ.path.toLocaleLowerCase().includes("shape")
+            && !occ.path.toLocaleLowerCase().includes("dsy_")
+            && !occ.path.toLocaleLowerCase().includes("nomad.ini")
+        ).map(occ => occ.path);
 
     console.log();
     console.log(badFields);
