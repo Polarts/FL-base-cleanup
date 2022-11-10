@@ -2,6 +2,8 @@ const ini = require('js-ini');
 const fs = require('fs').promises;
 const { printProgress, listINIFiles } = require('./utils');
 
+const args = process.argv.slice(2);
+
 async function getBases() {
     console.log("Getting all bases from universe.ini");
     const text = await fs.readFile('../DATA/UNIVERSE/universe.ini', 'utf-8');
@@ -20,8 +22,13 @@ async function getBases() {
 
 async function findBases() {
     const bases = await getBases();
-    const systemFiles = await listINIFiles("../DATA/UNIVERSE/SYSTEMS/*");
-    console.log(`Got ${systemFiles.length} system files. Scanning for bad bases...`);
+    let systemFiles = await listINIFiles("../DATA/UNIVERSE/SYSTEMS/*");
+    let exclude = [];
+    if (args[0] === "--exclude") {
+        exclude = args.slice(1);
+        systemFiles = systemFiles.filter(file => !exclude.some(sys => file.toLocaleLowerCase().includes(sys.toLocaleLowerCase())))
+    }
+    console.log(`Got ${systemFiles.length} system files, excluded ${exclude.length} file(s). Scanning for bad bases...`);
     const badBases = [];
     for ([baseIdx, base] of bases.entries()) {
         const nick = base.nickname;
