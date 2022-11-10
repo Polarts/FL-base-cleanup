@@ -1,8 +1,9 @@
-# Freelancer Unused Base Cleanup
+# Freelancer Cleanup Tools
 
 ### Dependencies: 
 - [Node.js](https://nodejs.org/en/)
 
 ### How to run:
-- Clone the repo into your `Freelancer\DATA\UNIVERSE` folder.
-- In the cloned project, run `npm install` then `node main.js`.
+- Clone the repo into your Freelancer folder, alongside the `DATA`, `DLLS` and `EXE` folders.
+- In the cloned project folder, run `npm install` on your terminal.
+- Run the desired script using the `node` command, for example: `node listUnusedBases.js`

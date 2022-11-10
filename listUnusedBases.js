@@ -1,30 +1,10 @@
 const ini = require('js-ini');
 const fs = require('fs').promises;
-const glob = require("glob");
-
-function printProgress(progress){
-    process.stdout.clearLine();
-    process.stdout.cursorTo(0);
-    process.stdout.write(progress);
-}
-
-async function getSystemFiles() {
-    console.log("Getting system files...");
-    return new Promise((resolve, reject) => {
-        glob("../SYSTEMS/*/*.ini", (error, fileList) => {
-            if (error) {
-                console.log(error);
-                reject(error);
-            } else {
-                resolve(fileList);
-            }
-        })
-    })
-}
+const { printProgress, listINIFiles } = require('./utils');
 
 async function getBases() {
     console.log("Getting all bases from universe.ini");
-    const text = await fs.readFile('../universe.ini', 'utf-8');
+    const text = await fs.readFile('../DATA/UNIVERSE/universe.ini', 'utf-8');
     const bases = [];
     text.split("[").forEach(section => {
         if (section) {
@@ -40,7 +20,7 @@ async function getBases() {
 
 async function findBases() {
     const bases = await getBases();
-    const systemFiles = await getSystemFiles();
+    const systemFiles = await listINIFiles("../DATA/UNIVERSE/SYSTEMS/*");
     console.log(`Got ${systemFiles.length} system files. Scanning for bad bases...`);
     const badBases = [];
     for ([baseIdx, base] of bases.entries()) {
