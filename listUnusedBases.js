@@ -1,28 +1,11 @@
-const ini = require('js-ini');
 const fs = require('fs').promises;
-const { printProgress, listINIFiles } = require('./utils');
+const { printProgress, getIniFiles, getSectionsFromIni } = require('./utils');
 
 const args = process.argv.slice(2);
 
-async function getBases() {
-    console.log("Getting all bases from universe.ini");
-    const text = await fs.readFile('../DATA/UNIVERSE/universe.ini', 'utf-8');
-    const bases = [];
-    text.split("[").forEach(section => {
-        if (section) {
-            const fullSection = `[${section}`;
-            const parsed = ini.parse(fullSection);
-            if ("Base" in parsed) {
-                bases.push(parsed.Base);
-            }
-        }
-    })
-    return bases;
-}
-
-async function findBases() {
-    const bases = await getBases();
-    let systemFiles = await listINIFiles("../DATA/UNIVERSE/SYSTEMS/*");
+async function listUnusedBases() {
+    const bases = await getSectionsFromIni('../DATA/UNIVERSE/universe.ini', "Base");
+    let systemFiles = await getIniFiles("../DATA/UNIVERSE/SYSTEMS/*");
     let exclude = [];
     if (args[0] === "--exclude") {
         exclude = args.slice(1);
@@ -48,5 +31,5 @@ async function findBases() {
     console.log(badBases);
 }
 
-findBases();
+listUnusedBases();
 
