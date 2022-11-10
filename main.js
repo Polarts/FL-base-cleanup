@@ -11,12 +11,12 @@ function printProgress(progress){
 async function getSystemFiles() {
     console.log("Getting system files...");
     return new Promise((resolve, reject) => {
-        glob("../SYSTEMS/*/*.ini", (e, r) => {
-            if (e) {
-                console.log(e);
-                reject(e);
+        glob("../SYSTEMS/*/*.ini", (error, fileList) => {
+            if (error) {
+                console.log(error);
+                reject(error);
             } else {
-                resolve(r.filter(f => !f.toLocaleLowerCase().includes("ga13")));
+                resolve(fileList);
             }
         })
     })
