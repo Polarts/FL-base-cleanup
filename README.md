@@ -15,17 +15,21 @@
 <details><summary>List Unused Bases</summary>
 <p>
 
-| File Name | Parameters | 
-| :---: | :---: |
-| `listUnusedBases.js` | `--exclude <system names, space-separated>` |
+| File Name | Exclude Option | Export Option |
+| --- | --- | --- |
+| `listUnusedBases.js` | `--exclude <system names>` | `--E` |
+| | Excludes the given systems.<br>Names are separated by space. | Exports the fields into a file<br>named `unusedBases.txt` |
+
 </p>
 </details>
 
 <details><summary>List Unused Fields</summary>
 <p>
 
-| File Name | Parameters | 
-| :---: | :---: |
-| `listUnusedFields.js` | `--exclude <system names, space-separated>` |
+| File Name | Exclude Option | Export Option | Delete Option |
+| --- | --- | --- | --- |
+| `listUnusedBases.js` | `--exclude <system names>` | `--E` | `--D` |
+| | Excludes the given systems.<br>Names are separated by space. | Exports the fields into a file<br>named `unusedFields.txt` | Deletes the unused field files. |
+
 </p>
 </details>

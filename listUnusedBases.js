@@ -1,23 +1,18 @@
 const fs = require('fs').promises;
-const { printProgress, getIniFiles, getSectionsFromIni } = require('./utils');
+const { printProgress, getIniFiles, getSectionsFromIni, getSystemFiles, writeListToFile, padNum } = require('./functions');
 
 const args = process.argv.slice(2);
+const shouldExport = args.includes("--E");
 
 async function listUnusedBases() {
     const bases = await getSectionsFromIni('../DATA/UNIVERSE/universe.ini', "Base");
-    let systemFiles = await getIniFiles("../DATA/UNIVERSE/SYSTEMS/*");
-    let exclude = [];
-    if (args[0] === "--exclude") {
-        exclude = args.slice(1);
-        systemFiles = systemFiles.filter(file => !exclude.some(sys => file.toLocaleLowerCase().includes(sys.toLocaleLowerCase())))
-    }
-    console.log(`Got ${systemFiles.length} system files, excluded ${exclude.length} file(s). Scanning for bad bases...`);
+    const systemFiles = await getSystemFiles(args);
     const badBases = [];
     for ([baseIdx, base] of bases.entries()) {
         const nick = base.nickname;
         let hasBase = false;
         for ([systemIdx, file] of systemFiles.entries()) {
-            printProgress(`base ${baseIdx+1}/${bases.length} - system ${systemIdx+1}/${systemFiles.length}...`);
+            printProgress(`base ${padNum(baseIdx+1,3)}/${bases.length} - system ${padNum(systemIdx+1, 3)}/${systemFiles.length}...`);
             const text = await fs.readFile(file, 'utf-8');
             if (text.toLocaleLowerCase().includes(nick.toLocaleLowerCase())) {
                 hasBase = true;
@@ -29,6 +24,10 @@ async function listUnusedBases() {
     }
     console.log();
     console.log(badBases);
+    if (shouldExport) {
+        console.log("Exporting result to file ./output/unusedBases.txt");
+        await writeListToFile("unusedBases", badBases);
+    }
 }
 
 listUnusedBases();

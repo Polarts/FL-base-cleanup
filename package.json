@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "glob": "^8.0.3",
-    "js-ini": "^1.5.1"
+    "js-ini": "^1.5.1",
+    "prompt-sync": "^4.2.0"
   }
 }
