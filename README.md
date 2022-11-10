@@ -28,7 +28,7 @@
 
 | File Name | Exclude Option | Export Option | Delete Option |
 | --- | --- | --- | --- |
-| `listUnusedBases.js` | `--exclude <system names>` | `--E` | `--D` |
+| `listUnusedFields.js` | `--exclude <system names>` | `--E` | `--D` |
 | | Excludes the given systems.<br>Names are separated by space. | Exports the fields into a file<br>named `unusedFields.txt` | Deletes the unused field files. |
 
 </p>
