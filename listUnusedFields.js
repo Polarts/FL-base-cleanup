@@ -51,7 +51,7 @@ async function listUnusedFields() {
         await writeListToFile("unusedFields", badFields);
     }
     if (shouldDelete) {
-        const response = prompt("About to delete unused field files, this is irreversible. Are you sure? (y/n) ");
+        const response = prompt("About to replace content of unused field files with ;, this is irreversible. Are you sure? (y/n) ");
         if (response.toLocaleLowerCase() === "y") {
             for (field of badFields) {
                 //await fs.unlink(field);

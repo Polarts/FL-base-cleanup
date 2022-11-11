@@ -29,7 +29,7 @@
 | File Name | Exclude Option | Export Option | Delete Option |
 | --- | --- | --- | --- |
 | `listUnusedFields.js` | `--exclude <system names>` | `--E` | `--D` |
-| | Excludes the given systems.<br>Names are separated by space. | Exports the fields into a file<br>named `unusedFields.txt` | Deletes the unused field files. |
+| | Excludes the given systems.<br>Names are separated by space. | Exports the fields into a file<br>named `unusedFields.txt` | Replaces the unused field files content with a `;`. |
 
 </p>
 </details>
