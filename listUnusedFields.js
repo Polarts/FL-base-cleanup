@@ -54,8 +54,12 @@ async function listUnusedFields() {
         const response = prompt("About to delete unused field files, this is irreversible. Are you sure? (y/n) ");
         if (response.toLocaleLowerCase() === "y") {
             for (field of badFields) {
-                await fs.unlink(field);
-                console.log(`DELETED: ${field}`);
+                //await fs.unlink(field);
+                //console.log(`DELETED: ${field}`);
+                
+                // Asked by devs to replace content with ; instead
+                await fs.writeFile(field, ";", "utf-8");
+                console.log(`SMASHED ${field} WITH A BIG LUMP OF ;`);
             }
         }
     }
