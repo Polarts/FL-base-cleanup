@@ -1,10 +1,12 @@
-const { getIniFiles, printProgress, padNum, getSystemFiles, writeListToFile } = require('./functions');
+const { getIniFiles, printProgress, padNum, getSystemFiles, writeListToFile, getCommonArgs } = require('./functions');
 const fs = require('fs').promises;
 const prompt = require("prompt-sync")({ sigint: true });
 
-const args = process.argv.slice(2);
-const shouldExport = args.includes("--E");
-const shouldDelete = args.includes("--D");
+const {
+    shouldExport,
+    shouldDelete,
+    excludeSystems
+} = getCommonArgs();
 
 async function getFields() {
     const asteroidFields = await getIniFiles("../DATA/SOLAR/ASTEROIDS");
@@ -17,32 +19,34 @@ async function getFields() {
 async function listUnusedFields() {
     const fields = await getFields();
     const fieldFileNames = fields.map(path => path.split("/").slice(-1).pop());
-    const systemFiles = await getSystemFiles(args);
+    const systemFiles = await getSystemFiles(excludeSystems);
     const fieldOccurences = {};
     for ([systemIdx, file] of systemFiles.entries()) {
         const systemText = await fs.readFile(file, "utf-8");
         for ([fieldIdx, field] of fieldFileNames.entries()) {
-            if (!fieldOccurences[field]) {
-                fieldOccurences[field] = {
-                    path: fields[fieldIdx],
-                    occurences: 0
-                };
-            }
-            printProgress(`scanning system ${padNum(systemIdx+1, 3)}/${systemFiles.length} for field ${padNum(fieldIdx+1, 3)}/${fields.length}`);
-            if (systemText.toLocaleLowerCase().includes(field.toLocaleLowerCase())) {
-                fieldOccurences[field].occurences++;
+            if (!excludeSystems.some(s => field.toLocaleLowerCase().includes(s.toLocaleLowerCase()))) {
+                if (!fieldOccurences[field]) {
+                    fieldOccurences[field] = {
+                        path: fields[fieldIdx],
+                        occurences: 0
+                    };
+                }
+                printProgress(`scanning system ${padNum(systemIdx + 1, 3)}/${systemFiles.length} for field ${padNum(fieldIdx + 1, 3)}/${fields.length}`);
+                if (systemText.toLocaleLowerCase().includes(field.toLocaleLowerCase())) {
+                    fieldOccurences[field].occurences++;
+                }
             }
         }
     }
-    
-    const badFields = 
+
+    const badFields =
         Object.values(fieldOccurences)
-        .filter(occ => 
-            occ.occurences === 0 
-            && !occ.path.toLocaleLowerCase().includes("shape")
-            && !occ.path.toLocaleLowerCase().includes("dsy_")
-            && !occ.path.toLocaleLowerCase().includes("nomad.ini")
-        ).map(occ => occ.path);
+            .filter(occ =>
+                occ.occurences === 0
+                && !occ.path.toLocaleLowerCase().includes("shape")
+                && !occ.path.toLocaleLowerCase().includes("dsy_")
+                && !occ.path.toLocaleLowerCase().includes("nomad.ini")
+            ).map(occ => occ.path);
 
     console.log();
     console.log(badFields);
@@ -56,7 +60,7 @@ async function listUnusedFields() {
             for (field of badFields) {
                 //await fs.unlink(field);
                 //console.log(`DELETED: ${field}`);
-                
+
                 // Asked by devs to replace content with ; instead
                 await fs.writeFile(field, ";", "utf-8");
                 console.log(`SMASHED ${field} WITH A BIG LUMP OF ;`);

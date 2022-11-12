@@ -12,13 +12,25 @@
 
 ## Available scripts:
 
+<details><summary>Common Options</summary>
+<p>
+
+| Name | Usage | Explanation | Example |
+| --- | --- | --- | --- |
+| <b>Exclude Systems</b> | `--exclude <system names>` | Excludes the given systems. Names are separated by space. | `node listUnusedFields --exclude br01 br02 br03` |
+| <b>Export To File</b> | `--E` | Exports the fields into a file in the output folder. The name of the file is mentioned when the script finishes. | `node listUnusedBases --E` |
+
+</p>
+</details>
+
 <details><summary>List Unused Bases</summary>
 <p>
 
-| File Name | Exclude Option | Export Option |
-| --- | --- | --- |
-| `listUnusedBases.js` | `--exclude <system names>` | `--E` |
-| | Excludes the given systems.<br>Names are separated by space. | Exports the fields into a file<br>named `unusedBases.txt` |
+<b>File Name:</b> `listUnusedBases.js`
+
+<b>Extra Options:</b> N/A
+
+<b>Example:</b> `node listUnusedBases`
 
 </p>
 </details>
@@ -26,10 +38,25 @@
 <details><summary>List Unused Fields</summary>
 <p>
 
-| File Name | Exclude Option | Export Option | Delete Option |
-| --- | --- | --- | --- |
-| `listUnusedFields.js` | `--exclude <system names>` | `--E` | `--D` |
-| | Excludes the given systems.<br>Names are separated by space. | Exports the fields into a file<br>named `unusedFields.txt` | Replaces the unused field files content with a `;`. |
+<b>File Name:</b> `listUnusedFields.js`
 
+<b>Extra Options:</b> 
+
+| Option | Explanation |
+| --- | --- |
+| `--D` | Replaces the unused field files content with a `;` |
+
+<b>Example:</b> `node listUnusedFields`
+</p>
+</details>
+
+<details><summary>List Invisible Bases</summary>
+<p>
+
+<b>File Name:</b> `listInvisibleBases.js`
+
+<b>Extra Options:</b> N/A
+
+<b>Example:</b> `node listInvisaibleBases`
 </p>
 </details>

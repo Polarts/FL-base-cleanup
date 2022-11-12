@@ -13,6 +13,26 @@ function printProgress(progress) {
     process.stdout.write(progress);
 }
 
+function getCommonArgs() {
+    const args = process.argv.slice(2);
+    const shouldExport = args.includes("--E");
+    const shouldDelete = args.includes("--D");
+    
+    const excludeIndex = args.indexOf("--exclude");
+    const excludeSystems = [];
+    let excludeArgsIndex = excludeIndex + 1;
+    while (args[excludeArgsIndex] && !args[excludeArgsIndex].includes("--")) {
+        excludeSystems.push(args[excludeArgsIndex]);
+        excludeArgsIndex++;
+    }
+
+    return {
+        shouldExport,
+        shouldDelete,
+        excludeSystems
+    }
+}
+
 async function getIniFiles(folderPath, globOptions) {
     console.log(`Getting INI files from ${folderPath}`);
     return new Promise((resolve, reject) => {
@@ -30,10 +50,9 @@ async function getIniFiles(folderPath, globOptions) {
 async function getSectionsFromIni(filePath, ...sectionNames) {
     const text = await fsPromises.readFile(filePath, 'utf-8');
     const sections = [];
-    text.split("[").forEach(section => {
-        if (section) {
-            const fullSection = `[${section}`;
-            const parsed = ini.parse(fullSection);
+    text.split(/(^\[)/gm).forEach(section => {
+        if (section && section !== "[") {
+            const parsed = ini.parse("["+section);
             sectionNames.forEach(secName => {
                 if (secName in parsed) {
                     sections.push(parsed[secName]);
@@ -44,14 +63,15 @@ async function getSectionsFromIni(filePath, ...sectionNames) {
     return sections;
 }
 
-async function getSystemFiles(args) {
+async function getSystemFiles(excludeSystems) {
     let systemFiles = await getIniFiles("../DATA/UNIVERSE/SYSTEMS/*");
-    let exclude = [];
-    if (args[0] === "--exclude") {
-        exclude = args.slice(1).filter(arg => !arg.includes("--"));
-        systemFiles = systemFiles.filter(file => !exclude.some(sys => file.toLocaleLowerCase().includes(sys.toLocaleLowerCase())))
-    }
-    console.log(`Got ${systemFiles.length} system files, excluded ${exclude.length} file(s). Scanning for bad fields...`);
+    systemFiles = systemFiles
+        .filter(file => 
+            !excludeSystems.some(sys => file.toLocaleLowerCase().includes(sys.toLocaleLowerCase()))
+            && !file.includes("intro")
+            && !file.includes("HLP")
+        )
+    console.log(`Got ${systemFiles.length} system files, excluded ${excludeSystems.length} file(s).`);
     return systemFiles;
 }
 
@@ -73,6 +93,7 @@ async function writeListToFile(fileName, list) {
 module.exports = {
     padNum,
     printProgress,
+    getCommonArgs,
     getIniFiles,
     getSectionsFromIni,
     getSystemFiles,
