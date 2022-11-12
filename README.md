@@ -13,18 +13,18 @@
 ## Available scripts:
 
 <details><summary>Common Options</summary>
-<p>
+<blockquote>
 
 | Name | Usage | Explanation | Example |
 | --- | --- | --- | --- |
 | <b>Exclude Systems</b> | `--exclude <system names>` | Excludes the given systems. Names are separated by space. | `node listUnusedFields --exclude br01 br02 br03` |
 | <b>Export To File</b> | `--E` | Exports the fields into a file in the output folder. The name of the file is mentioned when the script finishes. | `node listUnusedBases --E` |
 
-</p>
+</blockquote>
 </details>
 
 <details><summary>List Unused Bases</summary>
-<p>
+<blockquote>
 
 <b>File Name:</b> `listUnusedBases.js`
 
@@ -32,11 +32,11 @@
 
 <b>Example:</b> `node listUnusedBases`
 
-</p>
+</blockquote>
 </details>
 
 <details><summary>List Unused Fields</summary>
-<p>
+<blockquote>
 
 <b>File Name:</b> `listUnusedFields.js`
 
@@ -47,16 +47,16 @@
 | `--D` | Replaces the unused field files content with a `;` |
 
 <b>Example:</b> `node listUnusedFields`
-</p>
+</blockquote>
 </details>
 
 <details><summary>List Invisible Bases</summary>
-<p>
+<blockquote>
 
 <b>File Name:</b> `listInvisibleBases.js`
 
 <b>Extra Options:</b> N/A
 
 <b>Example:</b> `node listInvisaibleBases`
-</p>
+</blockquote>
 </details>
