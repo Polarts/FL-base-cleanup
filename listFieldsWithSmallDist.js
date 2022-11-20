@@ -3,7 +3,7 @@ const { getCommonArgs, getIniFiles, getSectionsFromIni, printProgress, padNum } 
 const { shouldExport } = getCommonArgs();
 
 const argIdx = process.argv.indexOf("--dist");
-const fillDist = argIdx[argIdx+1] ?? 1600;
+const fillDist = process.argv[argIdx+1] ?? 1600;
 
 async function getFields() {
     const asteroidFields = await getIniFiles("../DATA/SOLAR/ASTEROIDS");
