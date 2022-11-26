@@ -13,7 +13,7 @@ async function listInvisibleBases() {
         const bases = (await getSectionsFromIni(system, "Object")).filter(obj => "base" in obj);
         if (bases.length) {
             for ([baseIdx, base] of bases.entries()) {
-                printProgress(`Scanning system ${padNum(systemIdx + 1, 3)}/${padNum(systems.length, 3)} - base ${padNum(baseIdx + 1, 3)}/${padNum(bases.length, 3)}...`);
+                printProgress(`Scanning system ${padNum(systemIdx + 1, 3)}/${padNum(systems.length, 3)} - file ${system} - base ${padNum(baseIdx + 1, 3)}/${padNum(bases.length, 3)}...`);
                 if (base.archetype.toLocaleLowerCase() === "invisible_base" && !base.nickname.toLocaleLowerCase().includes("_proxy")) {
                     invisibleBases.push({
                         system,
