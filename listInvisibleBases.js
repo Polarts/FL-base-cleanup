@@ -6,6 +6,7 @@ const {
 } = getCommonArgs()
 
 async function listInvisibleBases() {
+    excludeSystems.push("iw09");
     const systems = await getSystemFiles(excludeSystems);
     const invisibleBases = [];
     for ([systemIdx, system] of systems.entries()) {

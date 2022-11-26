@@ -19,6 +19,7 @@ async function getFields() {
 async function listUnusedFields() {
     const fields = await getFields();
     const fieldFileNames = fields.map(path => path.split("/").slice(-1).pop());
+    excludeSystems.push("iw09");
     const systemFiles = await getSystemFiles(excludeSystems);
     const fieldOccurences = {};
     for ([systemIdx, file] of systemFiles.entries()) {
