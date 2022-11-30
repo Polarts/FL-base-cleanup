@@ -65,13 +65,15 @@ async function getSectionsFromIni(filePath, ...sectionNames) {
 
 async function getSystemFiles(excludeSystems) {
     let systemFiles = await getIniFiles("../DATA/UNIVERSE/SYSTEMS/*");
-    systemFiles = systemFiles
-        .filter(file => 
-            !excludeSystems.some(sys => file.toLocaleLowerCase().includes(sys.toLocaleLowerCase()))
-            && !file.includes("intro")
-            && !file.includes("HLP")
-        )
-    console.log(`Got ${systemFiles.length} system files, excluded ${excludeSystems.length} file(s).`);
+    if (excludeSystems && excludeSystems.length > 0) {
+        systemFiles = systemFiles
+            .filter(file => 
+                !excludeSystems.some(sys => file.toLocaleLowerCase().includes(sys.toLocaleLowerCase()))
+                && !file.includes("intro")
+                && !file.includes("HLP")
+            )
+    }
+    console.log(`Got ${systemFiles.length} system files, excluded ${excludeSystems?.length ?? 0} file(s).`);
     return systemFiles;
 }
 
