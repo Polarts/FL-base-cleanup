@@ -12,14 +12,11 @@ async function listUnusedBases() {
         const nick = base.nickname;
         let hasBase = false;
         for ([systemIdx, file] of systemFiles.entries()) {
-            printProgress(`base ${padNum(baseIdx + 1, 3)}/${bases.length} - system ${padNum(systemIdx + 1, 3)}/${systemFiles.length}...`);
-            if (excludeSystems.some(sys => file.toLocaleLowerCase().includes(sys.toLocaleLowerCase()))) {
+            printProgress(`base ${padNum(baseIdx + 1, 3)}/${bases.length} - system ${padNum(systemIdx + 1, 3)}/${systemFiles.length} - file ${file}`);
+            const text = await fs.readFile(file, 'utf-8');
+            if (text.toLocaleLowerCase().includes(nick.toLocaleLowerCase()) 
+                && !excludeSystems.some(sys => file.toLocaleLowerCase().includes(sys.toLocaleLowerCase()))) {
                 hasBase = true;
-            } else {
-                const text = await fs.readFile(file, 'utf-8');
-                if (text.toLocaleLowerCase().includes(nick.toLocaleLowerCase())) {
-                    hasBase = true;
-                }
             }
         }
         if (!hasBase) {
