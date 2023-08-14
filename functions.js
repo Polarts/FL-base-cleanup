@@ -53,7 +53,7 @@ async function getSectionsFromIni(filePath, ...sectionNames) {
     text.split(/(^\[)/gm).forEach(section => {
         if (section && section !== "[") {
             const parsed = ini.parse("["+section);
-            if (sectionNames) {
+            if (sectionNames.length > 0) {
                 sectionNames.forEach(secName => {
                     if (secName in parsed) {
                         sections.push(parsed[secName]);
