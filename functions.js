@@ -73,10 +73,9 @@ async function getSystemFiles(excludeSystems) {
         systemFiles = systemFiles
             .filter(file => 
                 !excludeSystems.some(sys => file.toLocaleLowerCase().includes(sys.toLocaleLowerCase()))
-                && !file.includes("intro")
-                && !file.includes("HLP")
             )
     }
+    systemFiles = systemFiles.filter(file => !file.includes("intro") && !file.includes("HLP"));
     console.log(`Got ${systemFiles.length} system files, excluded ${excludeSystems?.length ?? 0} file(s).`);
     return systemFiles;
 }
