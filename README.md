@@ -60,3 +60,15 @@
 <b>Example:</b> `node listInvisaibleBases`
 </blockquote>
 </details>
+
+
+<details><summary>List Missing Files</summary>
+<blockquote>
+
+<b>File Name:</b> `listMissingFiles.js`
+
+<b>Extra Options:</b> N/A
+
+<b>Example:</b> `node listMissingFiles`
+</blockquote>
+</details>

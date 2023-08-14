@@ -53,11 +53,15 @@ async function getSectionsFromIni(filePath, ...sectionNames) {
     text.split(/(^\[)/gm).forEach(section => {
         if (section && section !== "[") {
             const parsed = ini.parse("["+section);
-            sectionNames.forEach(secName => {
-                if (secName in parsed) {
-                    sections.push(parsed[secName]);
-                }
-            });
+            if (sectionNames.length > 0) {
+                sectionNames.forEach(secName => {
+                    if (secName in parsed) {
+                        sections.push(parsed[secName]);
+                    }
+                });
+            } else {
+                sections.push(Object.values(parsed)[0]);
+            }
         }
     })
     return sections;
@@ -69,10 +73,9 @@ async function getSystemFiles(excludeSystems) {
         systemFiles = systemFiles
             .filter(file => 
                 !excludeSystems.some(sys => file.toLocaleLowerCase().includes(sys.toLocaleLowerCase()))
-                && !file.includes("intro")
-                && !file.includes("HLP")
             )
     }
+    systemFiles = systemFiles.filter(file => !file.includes("intro") && !file.includes("HLP"));
     console.log(`Got ${systemFiles.length} system files, excluded ${excludeSystems?.length ?? 0} file(s).`);
     return systemFiles;
 }
