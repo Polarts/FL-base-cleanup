@@ -12,7 +12,7 @@ async function listMissingFiles() {
         const sections = await getSectionsFromIni(system);
         for (const [sectionIdx, section] in sections.entries()) {
             printProgress(`Scanning system ${padNum(systemIdx + 1, 3)}/${padNum(systems.length, 3)} - file ${system} - section ${padNum(sectionIdx + 1, 3)}/${padNum(sections.length, 3)}...`);
-            const filePaths = Object.values(section).filter(str => str.includes("\\")).map(p => `\\data\\${p}`);
+            const filePaths = Object.values(section).filter(str => str.includes("\\")).map(p => `..\\data\\${p}`);
             filePaths.forEach(p => {
                 if (!fs.existsSync(p)) {
                     missingFiles.push({
