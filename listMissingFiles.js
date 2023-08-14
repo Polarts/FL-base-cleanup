@@ -12,7 +12,7 @@ function extractPathsFromValues(values) {
             if (v.includes(",")) {
                 const vPaths = v.replace(" ", "").split(",");
                 vPaths.forEach(vPath => {
-                    if (vPath.includes(",")) {
+                    if (vPath.includes("\\")) {
                         paths.push(vPath);
                     }
                 })
